@@ -1,0 +1,137 @@
+dirs:
+  train:
+    data: train.csv
+    tfdata: train_tfdata
+  dev:
+    data: dev.csv
+    tfdata: dev_tfdata
+  test:
+    data: test.csv
+    tfdata: test_tfdata
+  type: csv
+  models: models
+  vocab: vocab
+  wav_ids: wav.scp
+  log: log
+  checkpoint: checkpoint
+  checkpoint_pretrain:
+
+data:
+  dim_raw_input: 80
+  dim_feature: 120
+  num_context: 5
+  downsample: 3
+  add_delta: False
+  feature_channel: 1
+  unit: subword
+  delimiter: "@@ "
+  train:
+    size_dataset:
+  dev:
+    size_dataset:
+  test:
+    size_dataset:
+  lang_num: 3
+  max_train_len: 3000
+  bert_feat_size: 1
+  withoutid: True
+
+model:
+  encoder:
+    type: transformer_encoder
+    num_blocks: 6
+    num_heads: 8
+    num_cell_units: 512
+    attention_dropout_rate: 0.1
+    residual_dropout_rate: 0.1
+  decoder:
+    type: transformer_decoder
+    size_embedding: 512
+    num_blocks: 6
+    num_heads: 8
+    num_cell_units: 512
+    attention_dropout_rate: 0.1
+    residual_dropout_rate: 0.1
+    init_scale: 0.04
+    label_smoothing_confidence: 0.9
+  encoder2:
+    type: transformer_tpeencoder
+    num_blocks: 6
+    num_heads: 8
+    num_cell_units: 512
+    attention_dropout_rate: 0.1
+    residual_dropout_rate: 0.1
+  decoder2:
+    type: fc_decoder
+    ctc_merge_repeated: True
+    confidence_penalty: 0.3
+    kd_factor: 0.5
+
+  kd:
+    encode_feat_layer: mean
+    loss_type: mean_squared_error
+    kd_factor: 0.05
+
+  use_multilabel: True
+  use_bert: False
+  use_ctc_bert: False
+  use_ctc_bertfull: False
+  structure: transformerTpe
+  loss_type: ce_ctc
+  prob_start: 0.1
+  prob_end: 0.9
+  start_warmup_steps: 10000
+  interim_steps: 10000
+  shallow_fusion: True
+  rerank: True
+  is_multilingual: False
+  encoder_concat_tag: False
+  decoder_concat_tag: False
+  is_cotrain: False
+  shrink_layer: True
+  variational_inference: False
+  latent_size: 512
+  use_semantic_encoder: True
+  pt_decoder: False
+  iter_mask: False
+  use_specAug: True
+
+dev_step: 1000
+begin_dev_step: 1000
+
+gpus: '0'
+
+num_epochs: 10000
+num_steps: 400000
+bucket_boundaries: 101,158,216,283,370,472,1278,2000,2050
+num_batch_tokens: 10000
+max_len: 500
+
+opti:
+  beta1: 0.9
+  beta2: 0.999
+  epsilon: 1e-8
+
+default_stddev: 0.046875
+
+# learning rate
+optimizer: adam
+
+## warm up need to be large enough!
+warmup_steps: 1000
+peak: 0.00005
+decay_steps: 50000
+beam_size: 1
+batch_size: 32
+
+length_penalty_weight: 0.2
+lambda_l2: 0.0
+
+grad_clip_value: 0.0
+slot_clip_value: 0.0
+grad_clip_norm: 0.0
+grad_clip_global_norm: 0.0
+metrics: BLEU
+
+#frozen_scope: transformer/encoder/,transformer/embedding/,transformer/decoder/decoder/fully_connected/
+#pretrain_scope: transformer/encoder/,transformer/embedding/,transformer/decoder/decoder/fully_connected/
