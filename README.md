@@ -6,9 +6,13 @@ This repository is the official implementation of the following papers:
 
    *Qianqian Dong, Rong Ye, Mingxuan Wang, Hao Zhou, Shuang Xu, Bo Xu, Lei Li. AAAI 2021.*
    
+   [[Project Page](https://dqqcasia.github.io/projects/LUT/)]
+   
 - [Consecutive Decoding for Speech-to-text Translation](https://arxiv.org/abs/2009.09737)
 
   *Qianqian Dong, Mingxuan Wang, Hao Zhou, Shuang Xu, Bo Xu, Lei Li. AAAI 2021.*
+  
+  [[Project Page](https://dqqcasia.github.io/projects/COSTT/)]
 
 
 ## Requirements
